@@ -1,4 +1,5 @@
 import React from "react";
+import GoogleAuth from "./GoogleAuth";
 
 const Navbar = () => {
   return (
@@ -36,9 +37,7 @@ const Navbar = () => {
             </a>
           </li>
           <li className='nav-item'>
-            <a className='nav-link' href='#'>
-              Blog
-            </a>
+            <GoogleAuth />
           </li>
         </ul>
       </div>
