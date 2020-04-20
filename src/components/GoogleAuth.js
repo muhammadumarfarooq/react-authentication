@@ -1,20 +1,25 @@
 import React, { useState } from "react";
 import Login from "./Login";
 import SignOut from "./SignOut";
+import { handleAuthState } from "../actions";
+import { connect } from "react-redux";
 
-const GoogleAuth = () => {
+const GoogleAuth = ({ authStatus, handleAuthState }) => {
   const [googleAuth, setGoogleAuth] = useState(null);
-  const [isLogedIn, SetLogIn] = useState(null);
+
+  console.log(authStatus);
 
   const handleSignOut = () => {
     googleAuth.signOut().then(() => {
-      SetLogIn(googleAuth.isSignedIn.get());
+      // SetLogIn(googleAuth.isSignedIn.get());
+      handleAuthState(googleAuth.isSignedIn.get());
     });
   };
 
   const handleSignIn = () => {
     googleAuth.signIn().then(() => {
-      SetLogIn(googleAuth.isSignedIn.get());
+      // SetLogIn(googleAuth.isSignedIn.get());
+      handleAuthState(googleAuth.isSignedIn.get());
     });
   };
 
@@ -28,7 +33,8 @@ const GoogleAuth = () => {
         })
         .then(() => {
           setGoogleAuth(window.gapi.auth2.getAuthInstance());
-          SetLogIn(window.gapi.auth2.getAuthInstance().isSignedIn.get());
+          handleAuthState(window.gapi.auth2.getAuthInstance().isSignedIn.get());
+          // SetLogIn(window.gapi.auth2.getAuthInstance().isSignedIn.get());
         });
     });
 
@@ -36,7 +42,7 @@ const GoogleAuth = () => {
   }, []);
 
   const whatToRender = () =>
-    isLogedIn ? (
+    authStatus ? (
       <SignOut handleSignOut={handleSignOut} />
     ) : (
       <Login handleSignIn={handleSignIn} />
@@ -45,4 +51,10 @@ const GoogleAuth = () => {
   return googleAuth && whatToRender();
 };
 
-export default GoogleAuth;
+const mapStateToProps = (state) => {
+  return {
+    authStatus: state.authState,
+  };
+};
+
+export default connect(mapStateToProps, { handleAuthState })(GoogleAuth);
