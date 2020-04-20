@@ -4,7 +4,7 @@ import SignOut from "./SignOut";
 
 const GoogleAuth = () => {
   const [googleAuth, setGoogleAuth] = useState(null);
-  const [isLogedIn, SetLogIn] = useState(true);
+  const [isLogedIn, SetLogIn] = useState(null);
 
   const handleSignOut = () => {
     googleAuth.signOut().then(() => {
